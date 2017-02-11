@@ -290,6 +290,7 @@
             this.CalculateButton.TabIndex = 16;
             this.CalculateButton.Text = "Calculate";
             this.CalculateButton.UseVisualStyleBackColor = true;
+            this.CalculateButton.Click += new System.EventHandler(this.button_click);
             // 
             // ClearButton
             // 

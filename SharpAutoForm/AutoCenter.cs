@@ -14,22 +14,19 @@ namespace SharpAutoForm
 {
     public partial class AutoCenterForm : Form
     {
-        decimal price;
-        private const decimal _stereoSystem = 425.76M;
-        private const decimal _leatherInterior = 987.41M;
-        private const decimal _computerNavigation = 1741.23M;
+        private decimal _temporaryPrice;
+        private const decimal _priceForStereoSystem = 425.76M;
+        private const decimal _priceForLeatherInterior = 987.41M;
+        private const decimal _priceForComputerNavigation = 1741.23M;
 
-        private const decimal _pearlized = 345.72M;
-        private const decimal _customizedDetailling = 599.99M;
+        private const decimal _priceForPearlized = 345.72M;
+        private const decimal _priceForCustomizedDetailling = 599.99M;
+
+        private decimal _basePrice;
+        private decimal _tradeIn;
         public AutoCenterForm()
         {
             InitializeComponent();
-        }
-
-        private bool _validation()
-        {
-            bool a = false;
-            return a;
         }
 
         private void button_click(object sender, EventArgs e)
@@ -38,7 +35,7 @@ namespace SharpAutoForm
 
             if (AutoCenterButton.Text == "Calculate")
             {
-
+                _calculate();
             }
             else if (AutoCenterButton.Text == "Clear")
             {
@@ -50,6 +47,7 @@ namespace SharpAutoForm
             }
         }
 
+        
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _changeFont();
@@ -91,18 +89,17 @@ namespace SharpAutoForm
                 switch (checkbox.Text)
                 {
                     case "Stereo System":
-                        price += _stereoSystem;
+                       _temporaryPrice += _priceForStereoSystem;
                         break;
 
                     case "Leather Interior":
-                        price += _leatherInterior;
+                        _temporaryPrice += _priceForLeatherInterior;
                         break;
 
                     case "Computer Navigation":
-                        price += _computerNavigation;
+                        _temporaryPrice += _priceForComputerNavigation;
                         break;
                 }
-                AdditionalOptionsTextBox.Text = price.ToString("C", CultureInfo.CurrentCulture);
             }
 
             else
@@ -110,55 +107,54 @@ namespace SharpAutoForm
                 switch (checkbox.Text)
                 {
                     case "Stereo System":
-                        price -= _stereoSystem;
+                        _temporaryPrice -= _priceForStereoSystem;
                         break;
 
                     case "Leather Interior":
-                        price -= _leatherInterior;
+                        _temporaryPrice -= _priceForLeatherInterior;
                         break;
 
                     case "Computer Navigation":
-                        price -= _computerNavigation;
+                        _temporaryPrice -= _priceForComputerNavigation;
                         break;
 
                 }
-                AdditionalOptionsTextBox.Text = price.ToString("C", CultureInfo.CurrentCulture);
             }
+            AdditionalOptionsTextBox.Text = _temporaryPrice.ToString("C", CultureInfo.CurrentCulture);
         }
 
         private void radio_CheckedChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("I will run!!");
+            
             RadioButton radio = (RadioButton)sender;
-            //Debug.WriteLine(radio.Text);
+            
             if (radio.Checked)
             {
                 switch (radio.Text)
                 {
                     case "Pearlized":
-                        price += _pearlized;
+                        _temporaryPrice += _priceForPearlized;
                         break;
 
                     case "Customized Detailling":
-                        price += _customizedDetailling;
+                        _temporaryPrice += _priceForCustomizedDetailling;
                         break;
                 }
-                AdditionalOptionsTextBox.Text = price.ToString("C", CultureInfo.CurrentCulture);
             }
             else
             {
                 switch (radio.Text)
                 {
                     case "Pearlized":
-                        price -= _pearlized;
+                        _temporaryPrice -= _priceForPearlized;
                         break;
 
                     case "Customized Detailling":
-                        price -= _customizedDetailling;
+                        _temporaryPrice -= _priceForCustomizedDetailling;
                         break;
                 }
-                AdditionalOptionsTextBox.Text = price.ToString("C", CultureInfo.CurrentCulture);
             }
+            AdditionalOptionsTextBox.Text = _temporaryPrice.ToString("C", CultureInfo.CurrentCulture);
         }
         private void cleartoolstripmenuitem_click(object sender, EventArgs e)
         {
@@ -207,6 +203,69 @@ namespace SharpAutoForm
             if (value == DialogResult.No)
             {
                 e.Cancel = true;
+            }
+        }
+
+        private bool _isvalid()
+        {
+            decimal value;
+            bool booleanValue = false;
+
+            if (string.IsNullOrEmpty(BasePriceTextBox.Text) || string.IsNullOrEmpty(TradeInAllowanceTextBox.Text) || TradeInAllowanceTextBox.Text == "0")
+            {
+                
+                MessageBox.Show("None of the required fields can be null", "Empty Field", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return booleanValue;
+            }
+
+            else if (!decimal.TryParse(BasePriceTextBox.Text, out value) || !decimal.TryParse(TradeInAllowanceTextBox.Text, out value))
+            {
+                MessageBox.Show("the data you have entered needs to be a number", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return booleanValue;
+            }
+
+            else if (decimal.Parse(BasePriceTextBox.Text) < 0 || decimal.Parse(TradeInAllowanceTextBox.Text) < 0)
+            {
+                MessageBox.Show("Neither of the values can be negative", "Negative Value detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return booleanValue;
+            }
+
+            else if (decimal.Parse(TradeInAllowanceTextBox.Text) > decimal.Parse(BasePriceTextBox.Text)) 
+            {
+                MessageBox.Show("Trade in Value cannot be more than base price","Purchase cannot be fulfilled",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return booleanValue;
+            }
+            else
+            {
+                return booleanValue = true;
+            }
+            
+        }
+
+        private void _calculate()
+        {
+            bool valueFromIsValid = _isvalid();
+
+            if (valueFromIsValid == true)
+            {
+
+                _basePrice = decimal.Parse(BasePriceTextBox.Text);
+                BasePriceTextBox.Text = _basePrice.ToString("C", CultureInfo.CurrentCulture);
+
+                decimal subTotal = _temporaryPrice + _basePrice;
+                SubTotalTextBox.Text = subTotal.ToString("C", CultureInfo.CurrentCulture);
+
+                decimal salesTax = subTotal * decimal.Parse("0.13");
+                SalesTaxTextBox.Text = salesTax.ToString("C", CultureInfo.CurrentCulture);
+
+                decimal total = subTotal + salesTax;
+                TotalTextBox.Text = total.ToString("C", CultureInfo.CurrentCulture);
+
+                _tradeIn = decimal.Parse(TradeInAllowanceTextBox.Text);
+                TradeInAllowanceTextBox.Text = _tradeIn.ToString("C", CultureInfo.CurrentCulture);
+
+                decimal amount = total - _tradeIn;
+                AmountDueTextBox.Text = amount.ToString("C", CultureInfo.CurrentCulture);
             }
         }
     }
