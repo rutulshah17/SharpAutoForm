@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoCenterForm));
             this.BasePriceLabel = new System.Windows.Forms.Label();
             this.AmountDueLabel = new System.Windows.Forms.Label();
             this.TradeInAllowanceLabel = new System.Windows.Forms.Label();
@@ -335,7 +336,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -422,6 +423,7 @@
             this.Controls.Add(this.AmountDueLabel);
             this.Controls.Add(this.BasePriceLabel);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "AutoCenterForm";
             this.Text = "Auto Center";

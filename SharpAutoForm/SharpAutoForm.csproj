@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutSharpAutoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutSharpAutoForm.Designer.cs">
+      <DependentUpon>AboutSharpAutoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoCenter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutSharpAutoForm.resx">
+      <DependentUpon>AboutSharpAutoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AutoCenter.resx">
       <DependentUpon>AutoCenter.cs</DependentUpon>
     </EmbeddedResource>

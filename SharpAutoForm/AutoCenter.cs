@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -77,7 +78,11 @@ namespace SharpAutoForm
         }
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This program calculates the AMOUNT DUE on a NEW or USED VEHICLE.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            AboutSharpAutoForm aboutForm = new AboutSharpAutoForm();
+
+            //step 2. Show the About Form with ShowDialog (a Modal Method to display the form)
+            aboutForm.ShowDialog();
         }
 
         private void checkBox_CheckedChanged(object sender, EventArgs e)
@@ -213,13 +218,13 @@ namespace SharpAutoForm
 
             if (string.IsNullOrEmpty(BasePriceTextBox.Text) || string.IsNullOrEmpty(TradeInAllowanceTextBox.Text) || TradeInAllowanceTextBox.Text == "0")
             {
-                
                 MessageBox.Show("None of the required fields can be null", "Empty Field", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
 
             else if (!decimal.TryParse(BasePriceTextBox.Text, out value) || !decimal.TryParse(TradeInAllowanceTextBox.Text, out value))
             {
+                _updateForm();
                 MessageBox.Show("the data you have entered needs to be a number", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
@@ -245,8 +250,9 @@ namespace SharpAutoForm
         private void _calculate()
         {
             bool valueFromIsValid = _isvalid();
+            bool valueFromUpdateForm = _updateForm();
 
-            if (valueFromIsValid == true)
+            if (valueFromIsValid == true || valueFromUpdateForm == true)
             {
 
                 _basePrice = decimal.Parse(BasePriceTextBox.Text);
@@ -266,7 +272,29 @@ namespace SharpAutoForm
 
                 decimal amount = total - _tradeIn;
                 AmountDueTextBox.Text = amount.ToString("C", CultureInfo.CurrentCulture);
+
+            }
+            else {
+                MessageBox.Show("Can i run!");
             }
         }
+
+        private bool _updateForm() {
+            bool booleanValue = false;
+            //"\b\d+\.\d{2}\b"
+            string pattern = @"/$$\d{1}/";
+
+            Regex regex = new Regex(pattern);
+            Match match = regex.Match(AmountDueTextBox.Text);
+
+            if (match.Success)
+            {
+                return booleanValue = true;
+            }
+            else {
+                return booleanValue;
+            }
+        }
+        
     }
 }
