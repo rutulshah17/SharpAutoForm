@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+App Name          :   Sharp Auto Form
+Author's Name     :   Rutul Shah
+Student ID        :   #200329341
+App Creation Date :   02/12/2017 
+App Description   :   This application is used to calculate the amount based on the base price of the product. It even calculates the taxes involved and if the used wants a pay-back for his old car
+                      It even helps to determine cost if we want to include different features in the car.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;

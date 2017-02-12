@@ -228,7 +228,7 @@
             this.ComputerNavigationCheckBox.TabIndex = 18;
             this.ComputerNavigationCheckBox.Text = "Computer Navigation";
             this.ComputerNavigationCheckBox.UseVisualStyleBackColor = true;
-            this.ComputerNavigationCheckBox.CheckedChanged += new System.EventHandler(this.checkBox_CheckedChanged);
+            this.ComputerNavigationCheckBox.CheckedChanged += new System.EventHandler(this._checkBox_CheckedChanged);
             // 
             // LeatherInteriorCheckBox
             // 
@@ -241,7 +241,7 @@
             this.LeatherInteriorCheckBox.TabIndex = 17;
             this.LeatherInteriorCheckBox.Text = "Leather Interior";
             this.LeatherInteriorCheckBox.UseVisualStyleBackColor = true;
-            this.LeatherInteriorCheckBox.CheckedChanged += new System.EventHandler(this.checkBox_CheckedChanged);
+            this.LeatherInteriorCheckBox.CheckedChanged += new System.EventHandler(this._checkBox_CheckedChanged);
             // 
             // StereoSystemCheckBox
             // 
@@ -254,7 +254,7 @@
             this.StereoSystemCheckBox.TabIndex = 16;
             this.StereoSystemCheckBox.Text = "Stereo System";
             this.StereoSystemCheckBox.UseVisualStyleBackColor = true;
-            this.StereoSystemCheckBox.CheckedChanged += new System.EventHandler(this.checkBox_CheckedChanged);
+            this.StereoSystemCheckBox.CheckedChanged += new System.EventHandler(this._checkBox_CheckedChanged);
             // 
             // ExteriorFinishGroupBox
             // 
@@ -282,7 +282,7 @@
             this.CustomizedDetaillingRadioButton.TabStop = true;
             this.CustomizedDetaillingRadioButton.Text = "Customized Detailling";
             this.CustomizedDetaillingRadioButton.UseVisualStyleBackColor = true;
-            this.CustomizedDetaillingRadioButton.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            this.CustomizedDetaillingRadioButton.CheckedChanged += new System.EventHandler(this._radio_CheckedChanged);
             // 
             // PearlizedRadioButton
             // 
@@ -296,7 +296,7 @@
             this.PearlizedRadioButton.TabStop = true;
             this.PearlizedRadioButton.Text = "Pearlized";
             this.PearlizedRadioButton.UseVisualStyleBackColor = true;
-            this.PearlizedRadioButton.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            this.PearlizedRadioButton.CheckedChanged += new System.EventHandler(this._radio_CheckedChanged);
             // 
             // StandardRadioButton
             // 
@@ -311,7 +311,7 @@
             this.StandardRadioButton.TabStop = true;
             this.StandardRadioButton.Text = "Standard";
             this.StandardRadioButton.UseVisualStyleBackColor = true;
-            this.StandardRadioButton.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            this.StandardRadioButton.CheckedChanged += new System.EventHandler(this._radio_CheckedChanged);
             // 
             // CalculateButton
             // 
@@ -323,7 +323,7 @@
             this.CalculateButton.TabIndex = 16;
             this.CalculateButton.Text = "Calculate";
             this.CalculateButton.UseVisualStyleBackColor = false;
-            this.CalculateButton.Click += new System.EventHandler(this.button_click);
+            this.CalculateButton.Click += new System.EventHandler(this._button_click);
             // 
             // ClearButton
             // 
@@ -335,7 +335,7 @@
             this.ClearButton.TabIndex = 17;
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = false;
-            this.ClearButton.Click += new System.EventHandler(this.button_click);
+            this.ClearButton.Click += new System.EventHandler(this._button_click);
             // 
             // ExitButton
             // 
@@ -347,7 +347,7 @@
             this.ExitButton.TabIndex = 18;
             this.ExitButton.Text = "Exit";
             this.ExitButton.UseVisualStyleBackColor = false;
-            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
+            this.ExitButton.Click += new System.EventHandler(this._exitButton_Click);
             // 
             // menuStrip
             // 
@@ -374,9 +374,11 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.E)));
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this._exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -392,30 +394,38 @@
             // calculateToolStripMenuItem
             // 
             this.calculateToolStripMenuItem.Name = "calculateToolStripMenuItem";
-            this.calculateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.calculateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.calculateToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.calculateToolStripMenuItem.Text = "Calculate";
-            this.calculateToolStripMenuItem.Click += new System.EventHandler(this.calculateToolStripMenuItem_Click);
+            this.calculateToolStripMenuItem.Click += new System.EventHandler(this._calculateToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Space)));
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.cleartoolstripmenuitem_click);
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this._cleartoolstripmenuitem_click);
             // 
             // fontToolStripMenuItem
             // 
             this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            this.fontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fontToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F)));
+            this.fontToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.fontToolStripMenuItem.Text = "Font";
-            this.fontToolStripMenuItem.Click += new System.EventHandler(this.fontToolStripMenuItem_Click);
+            this.fontToolStripMenuItem.Click += new System.EventHandler(this._fontToolStripMenuItem_Click);
             // 
             // colorToolStripMenuItem
             // 
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.colorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.C)));
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.colorToolStripMenuItem.Text = "Color";
-            this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.colorToolStripMenuItem.Click += new System.EventHandler(this._colorToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -428,9 +438,11 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.A)));
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this._aboutToolStripMenuItem_Click);
             // 
             // fontDialogBox
             // 
