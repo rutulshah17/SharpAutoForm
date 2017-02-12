@@ -15,7 +15,7 @@ namespace SharpAutoForm
 {
     public partial class AutoCenterForm : Form
     {
-        private decimal _temporaryPrice;
+        private decimal _temporaryStoredPrice;
         private const decimal _priceForStereoSystem = 425.76M;
         private const decimal _priceForLeatherInterior = 987.41M;
         private const decimal _priceForComputerNavigation = 1741.23M;
@@ -25,6 +25,7 @@ namespace SharpAutoForm
 
         private decimal _basePrice;
         private decimal _tradeIn;
+
         public AutoCenterForm()
         {
             InitializeComponent();
@@ -48,7 +49,7 @@ namespace SharpAutoForm
             }
         }
 
-        
+
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _changeFont();
@@ -78,10 +79,9 @@ namespace SharpAutoForm
         }
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
             AboutSharpAutoForm aboutForm = new AboutSharpAutoForm();
 
-            //step 2. Show the About Form with ShowDialog (a Modal Method to display the form)
             aboutForm.ShowDialog();
         }
 
@@ -94,15 +94,15 @@ namespace SharpAutoForm
                 switch (checkbox.Text)
                 {
                     case "Stereo System":
-                       _temporaryPrice += _priceForStereoSystem;
+                        _temporaryStoredPrice += _priceForStereoSystem;
                         break;
 
                     case "Leather Interior":
-                        _temporaryPrice += _priceForLeatherInterior;
+                        _temporaryStoredPrice += _priceForLeatherInterior;
                         break;
 
                     case "Computer Navigation":
-                        _temporaryPrice += _priceForComputerNavigation;
+                        _temporaryStoredPrice += _priceForComputerNavigation;
                         break;
                 }
             }
@@ -112,37 +112,37 @@ namespace SharpAutoForm
                 switch (checkbox.Text)
                 {
                     case "Stereo System":
-                        _temporaryPrice -= _priceForStereoSystem;
+                        _temporaryStoredPrice -= _priceForStereoSystem;
                         break;
 
                     case "Leather Interior":
-                        _temporaryPrice -= _priceForLeatherInterior;
+                        _temporaryStoredPrice -= _priceForLeatherInterior;
                         break;
 
                     case "Computer Navigation":
-                        _temporaryPrice -= _priceForComputerNavigation;
+                        _temporaryStoredPrice -= _priceForComputerNavigation;
                         break;
 
                 }
             }
-            AdditionalOptionsTextBox.Text = _temporaryPrice.ToString("C", CultureInfo.CurrentCulture);
+            AdditionalOptionsTextBox.Text = _temporaryStoredPrice.ToString("C", CultureInfo.CurrentCulture);
         }
 
         private void radio_CheckedChanged(object sender, EventArgs e)
         {
-            
+
             RadioButton radio = (RadioButton)sender;
-            
+
             if (radio.Checked)
             {
                 switch (radio.Text)
                 {
                     case "Pearlized":
-                        _temporaryPrice += _priceForPearlized;
+                        _temporaryStoredPrice += _priceForPearlized;
                         break;
 
                     case "Customized Detailling":
-                        _temporaryPrice += _priceForCustomizedDetailling;
+                        _temporaryStoredPrice += _priceForCustomizedDetailling;
                         break;
                 }
             }
@@ -151,15 +151,15 @@ namespace SharpAutoForm
                 switch (radio.Text)
                 {
                     case "Pearlized":
-                        _temporaryPrice -= _priceForPearlized;
+                        _temporaryStoredPrice -= _priceForPearlized;
                         break;
 
                     case "Customized Detailling":
-                        _temporaryPrice -= _priceForCustomizedDetailling;
+                        _temporaryStoredPrice -= _priceForCustomizedDetailling;
                         break;
                 }
             }
-            AdditionalOptionsTextBox.Text = _temporaryPrice.ToString("C", CultureInfo.CurrentCulture);
+            AdditionalOptionsTextBox.Text = _temporaryStoredPrice.ToString("C", CultureInfo.CurrentCulture);
         }
         private void cleartoolstripmenuitem_click(object sender, EventArgs e)
         {
@@ -213,52 +213,50 @@ namespace SharpAutoForm
 
         private bool _isvalid()
         {
-            decimal value;
             bool booleanValue = false;
 
-            if (string.IsNullOrEmpty(BasePriceTextBox.Text) || string.IsNullOrEmpty(TradeInAllowanceTextBox.Text) || TradeInAllowanceTextBox.Text == "0")
+            if (string.IsNullOrEmpty(BasePriceTextBox.Text))
             {
-                MessageBox.Show("None of the required fields can be null", "Empty Field", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("BASE PRICE cannot be null", "Empty Field Detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
 
-            else if (!decimal.TryParse(BasePriceTextBox.Text, out value) || !decimal.TryParse(TradeInAllowanceTextBox.Text, out value))
+            string basePriceText = (BasePriceTextBox.Text).Replace("$", "");
+            basePriceText = (basePriceText).Replace(",", "");
+
+            string tradeInAllowanceText = (TradeInAllowanceTextBox.Text).Replace("$", "");
+            tradeInAllowanceText = (tradeInAllowanceText).Replace(",", "");
+
+            if (!decimal.TryParse(basePriceText, out _basePrice) || !decimal.TryParse(tradeInAllowanceText, out _tradeIn))
             {
-                _updateForm();
+
                 MessageBox.Show("the data you have entered needs to be a number", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
 
-            else if (decimal.Parse(BasePriceTextBox.Text) < 0 || decimal.Parse(TradeInAllowanceTextBox.Text) < 0)
+            else if (_basePrice < 0 || _tradeIn < 0)
             {
                 MessageBox.Show("Neither of the values can be negative", "Negative Value detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
 
-            else if (decimal.Parse(TradeInAllowanceTextBox.Text) > decimal.Parse(BasePriceTextBox.Text)) 
+            else if (_basePrice < _tradeIn)
             {
-                MessageBox.Show("Trade in Value cannot be more than base price","Purchase cannot be fulfilled",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Trade in Value cannot be more than base price", "Purchase cannot be fulfilled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return booleanValue;
             }
-            else
-            {
-                return booleanValue = true;
-            }
-            
+            return booleanValue = true;
         }
 
         private void _calculate()
         {
-            bool valueFromIsValid = _isvalid();
-            bool valueFromUpdateForm = _updateForm();
-
-            if (valueFromIsValid == true || valueFromUpdateForm == true)
+            if (_isvalid())
             {
 
-                _basePrice = decimal.Parse(BasePriceTextBox.Text);
+                //_basePrice = decimal.Parse(BasePriceTextBox.Text);
                 BasePriceTextBox.Text = _basePrice.ToString("C", CultureInfo.CurrentCulture);
 
-                decimal subTotal = _temporaryPrice + _basePrice;
+                decimal subTotal = _temporaryStoredPrice + _basePrice;
                 SubTotalTextBox.Text = subTotal.ToString("C", CultureInfo.CurrentCulture);
 
                 decimal salesTax = subTotal * decimal.Parse("0.13");
@@ -267,34 +265,17 @@ namespace SharpAutoForm
                 decimal total = subTotal + salesTax;
                 TotalTextBox.Text = total.ToString("C", CultureInfo.CurrentCulture);
 
-                _tradeIn = decimal.Parse(TradeInAllowanceTextBox.Text);
+                //_tradeIn = decimal.Parse(TradeInAllowanceTextBox.Text);
                 TradeInAllowanceTextBox.Text = _tradeIn.ToString("C", CultureInfo.CurrentCulture);
 
                 decimal amount = total - _tradeIn;
                 AmountDueTextBox.Text = amount.ToString("C", CultureInfo.CurrentCulture);
-
-            }
-            else {
-                MessageBox.Show("Can i run!");
             }
         }
 
-        private bool _updateForm() {
-            bool booleanValue = false;
-            //"\b\d+\.\d{2}\b"
-            string pattern = @"/$$\d{1}/";
-
-            Regex regex = new Regex(pattern);
-            Match match = regex.Match(AmountDueTextBox.Text);
-
-            if (match.Success)
-            {
-                return booleanValue = true;
-            }
-            else {
-                return booleanValue;
-            }
+        private void calculateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _calculate();
         }
-        
     }
 }
